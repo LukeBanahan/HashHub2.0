@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User Documents</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>User Documents</h1>
+    <form action="#" method="post">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Document ID</th>
+                <th>File Name</th>
+                <th>File Path</th>
+                <th>Uploaded On</th>
+                <th>Updated On</th>
+                <th>Sign Status</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <tr th:each="document : ${userDocuments}">
+                <td th:text="${document.documentId}"></td>
+                <td th:text="${document.fileName}"></td>
+                <td th:text="${document.filePath}"></td>
+                <td th:text="${document.uploadedOn}"></td>
+                <td>
+                    <input type="radio" name="documentId" th:value="${document.documentId}">
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <button type="submit" class="btn btn-primary">Sign Document</button>
+        <a href="#" class="btn btn-secondary">Back</a>
+    </form>
+</div>
+</body>
+</html>
