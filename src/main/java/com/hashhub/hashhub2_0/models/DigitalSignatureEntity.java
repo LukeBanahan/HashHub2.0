@@ -1,9 +1,6 @@
 package com.hashhub.hashhub2_0.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,6 +11,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Table(name = "digital_signatures")
 public class DigitalSignatureEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
