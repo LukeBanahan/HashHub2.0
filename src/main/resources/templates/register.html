@@ -29,7 +29,7 @@
 <body>
 <div class="container">
     <h2 class="text-center mb-4">Register</h2>
-    <form method="post" role="form" th:action="@{/register/save}" th:object="${user}">
+    <form onsubmit="return validateEmail() && validatePassword()" method="post" role="form" th:action="@{/register/save}" th:object="${user}">
         <div th:if="${param.fail}" class="alert alert-danger">
             Username or email already exists</div>
         <div th:if="${param.logout}" class="alert alert-success">
@@ -75,3 +75,36 @@
         <a th:href="@{/login}" class="btn btn-primary btn-block btn-register">Login here</a>
     </form>
 </div>
+
+<script>
+    function validateEmail() {
+        var email = document.getElementById("email").value;
+        var emailRegex = /^[a-zA-Z0-9_+&*-]+(?:\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,7}$/;
+        if (!emailRegex.test(email)) {
+            alert("Please enter a valid email address.");
+            return false;
+        }
+        return true;
+    }
+
+function validatePassword() {
+    var password = document.getElementById("password").value;
+    var passwordRegex = /^(?=.*[0-9])(?=.*[a-zA-Z])[a-zA-Z0-9]{8,}$/;
+    var confirmPassword = document.getElementById("confirmPassword").value
+
+    if (!passwordRegex.test(password)) {
+        alert("Password must be at least 8 characters long and contain at least one letter and one digit.");
+        return false;
+    }
+
+    if (password !== confirmPassword) {
+        alert("Passwords do not match.");
+        return false;
+    }
+
+    return true;
+}
+
+
+
+</script>

@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class AuthController {
     private UserService userService;
+    private String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+    private String passwordRegex = "^(?=.*[0-9])(?=.*[a-zA-Z])[a-zA-Z0-9]{8,}$"; //OWASP Recommendations for strong password.
 
     public AuthController(UserService userService) {
         this.userService = userService;
@@ -40,6 +42,7 @@ public class AuthController {
     @PostMapping("register/save")
     public String register(@Valid @ModelAttribute("users") RegistrationDto user,
                            BindingResult result, Model model) {
+
         UserEntity existingUserEmail = userService.findByEmail(user.getEmail());
         if (existingUserEmail != null && existingUserEmail.getEmail() != null && !existingUserEmail.getEmail().isEmpty()) {
             result.rejectValue("email", "This email or username has already been registered.");
@@ -51,6 +54,7 @@ public class AuthController {
             result.rejectValue("username", "This email or username has already been registered.");
             return "redirect:/register?fail";
         }
+
 
         if (result.hasErrors()) {
             model.addAttribute("users", user);
