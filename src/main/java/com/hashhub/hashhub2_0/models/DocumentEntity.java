@@ -15,11 +15,15 @@ import java.time.LocalDateTime;
 public class DocumentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int documentId;
-    private int userId;
-    private String fileName;
-    private String filePath;
+    private Long id;
+    private String name;
+    private Long size;
+    private String email;
     private boolean isSigned;
+
+    @Lob
+    private byte[] content;
+
     private LocalDateTime uploadedOn;
     private LocalDateTime updatedOn;
 

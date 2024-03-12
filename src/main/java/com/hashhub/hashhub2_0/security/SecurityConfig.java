@@ -34,9 +34,12 @@ public class SecurityConfig {
                         new AntPathRequestMatcher("/register"),
                         new AntPathRequestMatcher("/login"),
                         new AntPathRequestMatcher("/dashboard"),
+                        new AntPathRequestMatcher("/user-documents"),
+                        new AntPathRequestMatcher("/shared-documents"),
                         new AntPathRequestMatcher("/css/**"),
                         new AntPathRequestMatcher("/js/**")
                 ).permitAll()
+
                 .and()
                 .formLogin(form -> form
                         .loginPage("/login")

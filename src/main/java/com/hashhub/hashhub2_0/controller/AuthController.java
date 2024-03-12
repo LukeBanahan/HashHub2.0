@@ -37,6 +37,16 @@ public class AuthController {
         return "dashboard";
     }
 
+    @GetMapping("/user-documents")
+    public String userDocuments() {
+        return "user-documents";
+    }
+
+    @GetMapping("/shared-documents")
+    public String sharedDocuments() {
+        return "shared-documents";
+    }
+
 
 
     @PostMapping("register/save")
@@ -62,7 +72,7 @@ public class AuthController {
         }
         userService.saveUser(user);
         System.out.print("User registered successfully.");
-        return "redirect:/dashboard";
+        return "redirect:/login";
 
     }
 }

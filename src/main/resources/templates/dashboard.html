@@ -7,6 +7,10 @@
     <div th:replace="fragments/navbar :: myNavbar "></div>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <h1>Dashboard</h1>
+    <a th:href="@{/document-upload}" class="btn btn-primary btn-block btn-register">Document Upload</a>
+    <a th:href="@{/user-documents}" class="btn btn-primary btn-block btn-register">My Documents</a>
+    <a th:href="@{/shared-documents}" class="btn btn-primary btn-block btn-register">Documents Shared with me</a>
+
 </head>
 <body>
 </body>
