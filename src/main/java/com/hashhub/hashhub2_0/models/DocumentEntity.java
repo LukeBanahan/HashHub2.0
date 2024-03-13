@@ -20,12 +20,12 @@ public class DocumentEntity {
     private Long size;
     private String email;
     private boolean isSigned;
-
+    private boolean isVerified;
     @Lob
     private byte[] content;
-
     private LocalDateTime uploadedOn;
-    private LocalDateTime updatedOn;
+    private LocalDateTime signedOn;
+    private LocalDateTime verifiedOn;
 
 
 }

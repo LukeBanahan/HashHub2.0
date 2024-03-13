@@ -37,11 +37,6 @@ public class AuthController {
         return "dashboard";
     }
 
-    @GetMapping("/user-documents")
-    public String userDocuments() {
-        return "user-documents";
-    }
-
     @GetMapping("/shared-documents")
     public String sharedDocuments() {
         return "shared-documents";

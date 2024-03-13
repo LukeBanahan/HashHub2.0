@@ -2,10 +2,12 @@ package com.hashhub.hashhub2_0.controller;
 
 import com.hashhub.hashhub2_0.models.DocumentEntity;
 import com.hashhub.hashhub2_0.repository.DocumentRepository;
+import com.hashhub.hashhub2_0.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,17 +36,18 @@ public class DocumentController {
 
         //gets authenticated email from spring security
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = authentication.getName();
+        String userEmail = authentication.getName();
 
         DocumentEntity document = new DocumentEntity ();
         document.setName(fileName);
         document.setContent(multipartFile.getBytes());
         document.setSize(multipartFile.getSize());
         document.setSigned(false);
+        document.setVerified(false);
         document.setUploadedOn(LocalDateTime.now());
 
-        //populates username field with current authenticated user's email
-        document.setEmail(username);
+        //populates email field with current authenticated user's email
+        document.setEmail(userEmail);
 
         repo.save(document);
 
@@ -52,6 +55,22 @@ public class DocumentController {
 
         return "redirect:/document-upload";
     }
+
+    @GetMapping("/user-documents")
+    public String getUserDocuments(Model model) {
+        //get current user email from spring security
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userEmail = authentication.getName();
+
+        // creates a list of documents uploaded by current user email
+        Iterable<DocumentEntity> userDocuments =  repo.findByEmail(userEmail);
+
+        model.addAttribute("userDocuments", userDocuments);
+
+        return "user-documents";
+    }
+
+
 
 
 }

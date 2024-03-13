@@ -4,9 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Documents</title>
-    <div th:replace="fragments/navbar :: myNavbar "></div>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>My Documents</title>
+    <div th:replace="~{fragments/navbar :: myNavbar}"></div>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
@@ -22,23 +21,25 @@
             <thead>
             <tr>
                 <th>Document ID</th>
-                <th>File Name</th>
-                <th>File Path</th>
+                <th>Document Title</th>
+                <th>Uploaded By</th>
                 <th>Uploaded On</th>
                 <th>Sign Status</th>
+                <th>Date of Signature</th>
                 <th>Select Document</th>
             </tr>
             </thead>
             <tbody>
 
             <tr th:each="document : ${userDocuments}">
-                <td th:text="${documents.documentId}"></td>
-                <td th:text="${documents.fileName}"></td>
-                <td th:text="${documents.filePath}"></td>
-                <td th:text="${documents.uploadedOn}"></td>
-                <td th:text="${documents.isSigned}"></td>
+                <td th:text="${document.id}"></td>
+                <td th:text="${document.name}"></td>
+                <td th:text="${document.email}"></td>
+                <td th:text="${document.uploadedOn}"></td>
+                <td th:text="${document.isSigned}"></td>
+                <td th:text="${document.signedOn}"></td>
                 <td>
-                    <input type="radio" name="documentId" th:value="${document.documentId}">
+                    <input type="radio" name="documentId" th:value="${document.id}">
                 </td>
             </tr>
             </tbody>
