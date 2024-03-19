@@ -1,20 +1,19 @@
-package com.hashhub.hashhub2_0.models;
+package com.hashhub.hashhub2_0.dto;
 
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
+import jakarta.validation.constraints.NotEmpty;
+import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Entity
-@Table(name = "documents")
-public class DocumentEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+@Builder
+public class DocumentDto {
+
     private Long id;
     private String name;
     private Long size;
@@ -22,11 +21,9 @@ public class DocumentEntity {
     private String sharedWith;
     private boolean isSigned;
     private boolean isVerified;
-    @Lob
     private byte[] content;
     private LocalDateTime uploadedOn;
     private LocalDateTime signedOn;
     private LocalDateTime verifiedOn;
-
-
 }
+

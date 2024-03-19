@@ -8,11 +8,6 @@
     <div th:replace="fragments/navbar :: myNavbar "></div>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <style>
-        body {
-            padding: 20px;
-        }
-    </style>
 </head>
 <body>
 <div class="container">
@@ -32,7 +27,7 @@
             </thead>
             <tbody>
 
-            <tr th:each="document : ${userDocuments}">
+            <tr th:each="document : ${sharedDocuments}">
                 <td th:text="${document.documentId}"></td>
                 <td th:text="${document.name}"></td>
                 <td th:text="${document.date}"></td>
@@ -46,8 +41,9 @@
             </tbody>
         </table>
         <button type="submit" class="btn btn-primary">Verify Document</button>
-        <a href="#" class="btn btn-secondary">Back</a>
+        <a th:href="@{/dashboard}" class="btn btn-secondary">Back</a>
     </form>
 </div>
+
 </body>
 </html>

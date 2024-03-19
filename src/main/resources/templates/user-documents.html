@@ -5,15 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Documents</title>
-    <div th:replace="~{fragments/navbar :: myNavbar}"></div>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <style>
-        body {
-            padding: 20px;
-        }
-    </style>
 </head>
 <body>
+<div th:replace="~{fragments/navbar :: myNavbar}"></div>
 <div class="container">
     <h1>User Documents</h1>
     <form action="#" method="post">
@@ -22,7 +17,9 @@
             <tr>
                 <th>Document ID</th>
                 <th>Document Title</th>
+                <th>File Size</th>
                 <th>Uploaded By</th>
+                <th>Shared With</th>
                 <th>Uploaded On</th>
                 <th>Sign Status</th>
                 <th>Date of Signature</th>
@@ -30,24 +27,76 @@
             </tr>
             </thead>
             <tbody>
-
             <tr th:each="document : ${userDocuments}">
                 <td th:text="${document.id}"></td>
                 <td th:text="${document.name}"></td>
+                <td th:text="${document.size}"></td>
                 <td th:text="${document.email}"></td>
+                <td th:text="${document.sharedWith}"></td>
                 <td th:text="${document.uploadedOn}"></td>
                 <td th:text="${document.isSigned}"></td>
                 <td th:text="${document.signedOn}"></td>
                 <td>
-                    <input type="radio" name="documentId" th:value="${document.id}">
+                    <input type="radio" name="selectedDocumentId" th:value="${document.id}"
+                           th:attr="data-document-name=${document.name}">
                 </td>
             </tr>
             </tbody>
         </table>
         <button type="submit" class="btn btn-primary">Sign Document</button>
-        <button type ="submit" class="btn btn-primary">Send Document</button>
-        <a href="#" class="btn btn-secondary">Back</a>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#sendDocumentModal">Send Document</button>
+        <a th:href="@{/dashboard}" class="btn btn-secondary">Back</a>
     </form>
 </div>
+<div class="modal fade" id="sendDocumentModal" tabindex="-1" role="dialog" aria-labelledby="sendDocumentModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="sendDocumentModalLabel">Send Document</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="/send-document" method="post">
+            <div class="modal-body">
+                    <div class="form-group">
+                        <label for="selectedDocumentId">Selected Document ID:</label>
+                        <span id="selectedDocumentId" th:text="${selectedDocumentId}"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="selectedDocumentName">Selected Document Name:</label>
+                        <span id="selectedDocumentName" th:text="${selectedDocumentName}"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="recipientEmail">Recipient Email</label>
+                        <input type="email" class="form-control" id="recipientEmail" name="recipientEmail"placeholder="Enter email">
+                    </div>
+            </div>
+                <input type="hidden" id="selectedDocumentIdValue" name="selectedDocumentIdValue" th:value="${selectedDocumentId}">
+                <div class="modal-footer">
+                <button type="submit" class="btn btn-primary btn-block btn-register">Send Document</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script th:inline="javascript">
+    $(document).ready(function () {
+        $('input[type=radio][name=selectedDocumentId]').change(function () {
+            var selectedDocumentId = $(this).val();
+            var selectedDocumentName = $(this).data('document-name');
+  // put the document information from the document selected by the user into the modal view and display to user.
+            $('#selectedDocumentId').text(selectedDocumentId);
+            $('#selectedDocumentName').text(selectedDocumentName);
+            $('#selectedDocumentIdValue').val(selectedDocumentId);
+        });
+    });
+</script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 </body>
 </html>

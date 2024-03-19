@@ -37,12 +37,6 @@ public class AuthController {
         return "dashboard";
     }
 
-    @GetMapping("/shared-documents")
-    public String sharedDocuments() {
-        return "shared-documents";
-    }
-
-
 
     @PostMapping("register/save")
     public String register(@Valid @ModelAttribute("users") RegistrationDto user,
