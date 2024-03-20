@@ -17,7 +17,10 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 
 @Controller
 public class DocumentController {
@@ -101,10 +104,23 @@ public class DocumentController {
 
     }
 
+    @PostMapping("/sign-document")
+    public String signDocument(@RequestParam("selectedDocumentId") String id) throws NoSuchAlgorithmException {
+        long documentId = Long.parseLong(id);
+        DocumentEntity documentEntity = repo.findById(documentId);
+
+        byte[] documentToSign = documentEntity.getContent();
+        MessageDigest digest = MessageDigest.getInstance("SHA256");
+        byte[] hashedDocument = digest.digest(documentToSign);
+        System.out.println("**************************************************************************************");
+        System.out.println("This is the hashed document" + Arrays.toString(hashedDocument));
+        System.out.println("**************************************************************************************");
 
 
+        return "redirect:/user-documents";
+    }
 
-
+    
 
 }
 

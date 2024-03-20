@@ -5,37 +5,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shared Documents</title>
-    <div th:replace="fragments/navbar :: myNavbar "></div>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
+<div th:replace="fragments/navbar :: myNavbar "></div>
 <div class="container">
-    <h1>Shared Documents</h1>
+    <h1>Documents Shared With Me</h1>
     <form action="#" method="post">
         <table class="table">
             <thead>
             <tr>
                 <th>Document ID</th>
                 <th>File Name</th>
-                <th>Signed By</th>
-                <th>Signed On</th>
+                <th>Shared By</th>
+                <th>Upload Date</th>
                 <th>Sign Status</th>
+                <th>Signed On</th>
                 <th>Verification Status</th>
+                <th>Verification Date</th>
                 <th>Select Document</th>
             </tr>
             </thead>
             <tbody>
-
             <tr th:each="document : ${sharedDocuments}">
-                <td th:text="${document.documentId}"></td>
+                <td th:text="${document.id}"></td>
                 <td th:text="${document.name}"></td>
-                <td th:text="${document.date}"></td>
-                <td th:text="${document.isSigned}"></td>
-                <td th:text="${document.isVerified}"></td>
+                <td th:text="${document.email}"></td>
                 <td th:text="${document.uploadedOn}"></td>
+                <td th:text="${document.isSigned}"></td>
+                <td th:text="${document.signedOn}"></td>
+                <td th:text="${document.isVerified}"></td>
+                <td th:text="${document.verifiedOn}"></td>
                 <td>
-                    <input type="radio" name="documentId" th:value="${document.documentId}">
+                    <input type="radio" name="documentId" th:value="${document.id}">
                 </td>
             </tr>
             </tbody>
@@ -44,6 +47,5 @@
         <a th:href="@{/dashboard}" class="btn btn-secondary">Back</a>
     </form>
 </div>
-
 </body>
 </html>
