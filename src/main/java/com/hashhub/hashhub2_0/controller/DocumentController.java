@@ -17,10 +17,12 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import java.security.*;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.X509EncodedKeySpec;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Base64;
 
 @Controller
 public class DocumentController {
@@ -100,27 +102,89 @@ public class DocumentController {
             repo.save(documentEntity);
         }
 
-        return "redirect:/user-documents";
+        if (documentEntity != null) {
+            return "redirect:/user-documents?success";
+        } else {
+            return "redirect:/user-documents?fail";
+        }
 
     }
 
     @PostMapping("/sign-document")
-    public String signDocument(@RequestParam("selectedDocumentId") String id) throws NoSuchAlgorithmException {
+    public String signDocument(@RequestParam("selectedDocumentId") String id) throws NoSuchAlgorithmException, InvalidKeyException, SignatureException {
+        //Find selected document
         long documentId = Long.parseLong(id);
         DocumentEntity documentEntity = repo.findById(documentId);
 
+        //Hash document with SHA256 algorithm and store it in a new byte array variable called hashedDocument
         byte[] documentToSign = documentEntity.getContent();
         MessageDigest digest = MessageDigest.getInstance("SHA256");
         byte[] hashedDocument = digest.digest(documentToSign);
-        System.out.println("**************************************************************************************");
-        System.out.println("This is the hashed document" + Arrays.toString(hashedDocument));
-        System.out.println("**************************************************************************************");
 
+
+
+        //Generate key pair using RSA
+        KeyPairGenerator keyGenerator = KeyPairGenerator.getInstance("RSA");
+        keyGenerator.initialize(2048);
+        KeyPair pair = keyGenerator.generateKeyPair();
+        PublicKey publicKey = pair.getPublic();
+        PrivateKey privateKey = pair.getPrivate();
+
+        //Encrypt hashed document to produce digital signature
+        Signature rsa = Signature.getInstance("SHA256withRSA");
+        rsa.initSign(privateKey);
+        rsa.update(hashedDocument);
+        byte[] digitalSignature = rsa.sign();
+
+
+        documentEntity.setDigitalSignature(digitalSignature);
+        documentEntity.setPublicKey(publicKey.getEncoded());
+        documentEntity.setSigned(true);
+        documentEntity.setSignedOn(LocalDateTime.now());
+        repo.save(documentEntity);
 
         return "redirect:/user-documents";
     }
 
-    
+    @PostMapping("/verify-document")
+    public String verifyDocument(@RequestParam("selectedDocumentId") String id) throws NoSuchAlgorithmException, InvalidKeyException, SignatureException, InvalidKeySpecException {
+        //Find selected document
+        long documentId = Long.parseLong(id);
+        DocumentEntity documentEntity = repo.findById(documentId);
+
+        byte[] digitalSignatureBytes = documentEntity.getDigitalSignature();
+        byte[] publicKeyBytes = documentEntity.getPublicKey();
+
+        byte[] documentToVerify = documentEntity.getContent();
+        MessageDigest digest = MessageDigest.getInstance("SHA256");
+        byte[] hashedDocument = digest.digest(documentToVerify);
+
+
+
+        X509EncodedKeySpec keySpec = new X509EncodedKeySpec(publicKeyBytes);
+        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+        PublicKey publicKey = keyFactory.generatePublic(keySpec);
+
+        Signature signature = Signature.getInstance("SHA256withRSA");
+        signature.initVerify(publicKey);
+
+        signature.update(hashedDocument);
+
+        boolean isVerified = signature.verify(digitalSignatureBytes);
+
+        if (isVerified) {
+            documentEntity.setVerified(true);
+            documentEntity.setVerifiedOn(LocalDateTime.now());
+            repo.save(documentEntity);
+
+            return "redirect:/shared-documents?success";
+        } else {
+            return "redirect:/shared-documents?fail";
+        }
+
+    } //https://www.tabnine.com/code/java/classes/java.security.spec.X509EncodedKeySpec
+
+
 
 }
 

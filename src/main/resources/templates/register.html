@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registration</title>
-    <div th:replace="fragments/navbar :: myNavbar "></div>
+
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
@@ -27,6 +27,7 @@
 
 </head>
 <body>
+<div th:replace="fragments/navbar :: myNavbar "></div>
 <div class="container">
     <h2 class="text-center mb-4">Register</h2>
     <form onsubmit="return validateEmail() && validatePassword()" method="post" role="form" th:action="@{/register/save}" th:object="${user}">
@@ -104,7 +105,4 @@ function validatePassword() {
 
     return true;
 }
-
-
-
 </script>

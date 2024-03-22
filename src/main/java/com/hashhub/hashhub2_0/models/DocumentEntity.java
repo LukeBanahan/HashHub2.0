@@ -21,6 +21,10 @@ public class DocumentEntity {
     private String email;
     private String sharedWith;
     private boolean isSigned;
+    @Lob
+    private byte[] publicKey;
+    @Lob
+    private byte[] digitalSignature;
     private boolean isVerified;
     @Lob
     private byte[] content;

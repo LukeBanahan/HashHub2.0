@@ -9,6 +9,10 @@
 </head>
 <body>
 <div th:replace="~{fragments/navbar :: myNavbar}"></div>
+<div th:if="${param.success}" class="alert alert-success">
+    The document has been shared successfully.</div>
+<div th:if="${param.fail}" class="alert alert-danger">
+    The Document could not be sent, please check the email address is correct.</div>
 <div class="container">
     <h1>My Documents</h1>
     <form action="/sign-document" method="post">
@@ -20,9 +24,8 @@
                 <th>File Size</th>
                 <th>Uploaded By</th>
                 <th>Shared With</th>
-                <th>Uploaded On</th>
                 <th>Sign Status</th>
-                <th>Date of Signature</th>
+                <th>Verification Status</th>
                 <th>Select Document</th>
             </tr>
             </thead>
@@ -33,9 +36,22 @@
                 <td th:text="${document.size}"></td>
                 <td th:text="${document.email}"></td>
                 <td th:text="${document.sharedWith}"></td>
-                <td th:text="${document.uploadedOn}"></td>
-                <td th:text="${document.isSigned}"></td>
-                <td th:text="${document.signedOn}"></td>
+                <td>
+                 <span th:if="${document.isSigned}">
+                     <img src="/images/greentick.png" alt="True" width="20" height="20">
+                 </span>
+                    <span th:unless="${document.isSigned}">
+                         <img src="/images/red_x.png" alt="False" width="20" height="20">
+                    </span>
+                </td>
+                <td>
+                 <span th:if="${document.isVerified}">
+                     <img src="/images/greentick.png" alt="True" width="20" height="20">
+                 </span>
+                    <span th:unless="${document.isVerified}">
+                         <img src="/images/red_x.png" alt="False" width="20" height="20">
+                    </span>
+                </td>
                 <td>
                     <input type="radio" name="selectedDocumentId" th:value="${document.id}"
                            th:attr="data-document-name=${document.name}">

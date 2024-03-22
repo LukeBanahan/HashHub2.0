@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class AuthController {
     private UserService userService;
-    private String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
-    private String passwordRegex = "^(?=.*[0-9])(?=.*[a-zA-Z])[a-zA-Z0-9]{8,}$"; //OWASP Recommendations for strong password.
 
     public AuthController(UserService userService) {
         this.userService = userService;
@@ -61,7 +59,7 @@ public class AuthController {
         }
         userService.saveUser(user);
         System.out.print("User registered successfully.");
-        return "redirect:/login";
+        return "redirect:/login?success";
 
     }
 }

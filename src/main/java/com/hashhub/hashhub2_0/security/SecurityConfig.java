@@ -36,7 +36,7 @@ public class SecurityConfig {
                         new AntPathRequestMatcher("/dashboard"),
                         new AntPathRequestMatcher("/user-documents"),
                         new AntPathRequestMatcher("/shared-documents"),
-                        new AntPathRequestMatcher("/css/**"),
+                        new AntPathRequestMatcher("/static"),
                         new AntPathRequestMatcher("/js/**")
                 ).permitAll()
 

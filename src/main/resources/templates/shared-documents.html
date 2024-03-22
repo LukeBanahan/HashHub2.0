@@ -10,35 +10,47 @@
 </head>
 <body>
 <div th:replace="fragments/navbar :: myNavbar "></div>
+<div th:if="${param.success}" class="alert alert-success">
+   Document integrity verified.</div>
+<div th:if="${param.fail}" class="alert alert-danger">
+    Verification failed. The document integrity could not be verified.</div>
 <div class="container">
     <h1>Documents Shared With Me</h1>
-    <form action="#" method="post">
+    <form action="/verify-document" method="post">
         <table class="table">
             <thead>
             <tr>
                 <th>Document ID</th>
                 <th>File Name</th>
                 <th>Shared By</th>
-                <th>Upload Date</th>
                 <th>Sign Status</th>
-                <th>Signed On</th>
                 <th>Verification Status</th>
-                <th>Verification Date</th>
                 <th>Select Document</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="document : ${sharedDocuments}">
                 <td th:text="${document.id}"></td>
-                <td th:text="${document.name}"></td>
-                <td th:text="${document.email}"></td>
-                <td th:text="${document.uploadedOn}"></td>
-                <td th:text="${document.isSigned}"></td>
-                <td th:text="${document.signedOn}"></td>
-                <td th:text="${document.isVerified}"></td>
-                <td th:text="${document.verifiedOn}"></td>
+                <td title="This is the title of the document" th:text="${document.name}"></td>
+                <td title="This is the email address of the user who shared this document with you." th:text="${document.email}"></td>
                 <td>
-                    <input type="radio" name="documentId" th:value="${document.id}">
+                 <span title="This document has been signed by the user who shared this document with you." th:if="${document.isSigned}">
+                     <img src="/images/greentick.png" alt="True" width="20" height="20">
+                 </span>
+                    <span title ="This document has not been signed yet." th:unless="${document.isSigned}">
+                         <img src="/images/red_x.png" alt="False" width="20" height="20">
+                    </span>
+                </td>
+                <td>
+                 <span title="The integrity of this signed document has been verified." th:if="${document.isVerified}">
+                     <img src="/images/greentick.png" alt="True" width="20" height="20">
+                 </span>
+                    <span title="The integrity of this signed document has not yet been verified" th:unless="${document.isVerified}">
+                         <img src="/images/red_x.png" alt="False" width="20" height="20">
+                    </span>
+                </td>
+                <td>
+                    <input title="Select the document you wish to verify." type="radio" name="selectedDocumentId" th:value="${document.id}">
                 </td>
             </tr>
             </tbody>
