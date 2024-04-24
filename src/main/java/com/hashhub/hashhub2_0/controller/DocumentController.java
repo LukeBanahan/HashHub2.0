@@ -93,7 +93,7 @@ public class DocumentController {
 
     @PostMapping("/send-document")
     public String sendDocument(@RequestParam("selectedDocumentIdValue") String id,
-                               @RequestParam("recipientEmail") String recipientEmail){
+                               @RequestParam("recipientEmail") String recipientEmail, RedirectAttributes ra){
         long documentId = Long.parseLong(id);
         DocumentEntity documentEntity = repo.findById(documentId);
 
@@ -103,15 +103,29 @@ public class DocumentController {
         }
 
         if (documentEntity != null) {
-            return "redirect:/user-documents?success";
+            ra.addAttribute("sendSuccess", true);
+            return "redirect:/user-documents";
         } else {
-            return "redirect:/user-documents?fail";
+            ra.addAttribute("sendFail", true);
+            return "redirect:/user-documents";
         }
-
     }
 
+    @PostMapping("/delete-document")
+    public String deleteDocument(@RequestParam("deleteSelectedDocumentIdValue") String id, RedirectAttributes ra) {
+        long documentId = Long.parseLong(id);
+        try {
+            repo.deleteById(documentId);
+            ra.addAttribute("deleteSuccess", "Document deleted successfully.");
+        } catch (Exception e) {
+            ra.addAttribute("deleteError", "Failed to delete the document.");
+        }
+        return "redirect:/user-documents";
+    }
+
+
     @PostMapping("/sign-document")
-    public String signDocument(@RequestParam("selectedDocumentId") String id) throws NoSuchAlgorithmException, InvalidKeyException, SignatureException {
+    public String signDocument(@RequestParam("selectedDocumentId") String id, RedirectAttributes ra ) throws NoSuchAlgorithmException, InvalidKeyException, SignatureException {
         //Find selected document
         long documentId = Long.parseLong(id);
         DocumentEntity documentEntity = repo.findById(documentId);
@@ -122,7 +136,6 @@ public class DocumentController {
         byte[] hashedDocument = digest.digest(documentToSign);
 
 
-
         //Generate key pair using RSA
         KeyPairGenerator keyGenerator = KeyPairGenerator.getInstance("RSA");
         keyGenerator.initialize(2048);
@@ -130,7 +143,7 @@ public class DocumentController {
         PublicKey publicKey = pair.getPublic();
         PrivateKey privateKey = pair.getPrivate();
 
-        //Encrypt hashed document to produce digital signature
+        //Encrypt hash to produce digital signature
         Signature rsa = Signature.getInstance("SHA256withRSA");
         rsa.initSign(privateKey);
         rsa.update(hashedDocument);
@@ -141,10 +154,17 @@ public class DocumentController {
         documentEntity.setPublicKey(publicKey.getEncoded());
         documentEntity.setSigned(true);
         documentEntity.setSignedOn(LocalDateTime.now());
-        repo.save(documentEntity);
 
+        try {
+            repo.save(documentEntity);
+            ra.addAttribute("signSuccess", true);
+        } catch (Exception e) {
+            ra.addAttribute("signFail", true);
+        }
         return "redirect:/user-documents";
     }
+
+
 
     @PostMapping("/verify-document")
     public String verifyDocument(@RequestParam("selectedDocumentId") String id) throws NoSuchAlgorithmException, InvalidKeyException, SignatureException, InvalidKeySpecException {

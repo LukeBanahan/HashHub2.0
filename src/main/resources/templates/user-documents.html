@@ -9,12 +9,32 @@
 </head>
 <body>
 <div th:replace="~{fragments/navbar :: myNavbar}"></div>
-<div th:if="${param.success}" class="alert alert-success">
-    The document has been shared successfully.</div>
-<div th:if="${param.fail}" class="alert alert-danger">
-    The Document could not be sent, please check the email address is correct.</div>
+
+<div th:if="${param.sendSuccess}" class="alert alert-success">
+    The document has been shared successfully.
+</div>
+<div th:if="${param.sendFail}" class="alert alert-danger">
+    The Document could not be sent, please check the email address is correct.
+</div>
+
+<div th:if="${param.signSuccess}" class="alert alert-success">
+    The document has been digitally signed successfully.
+</div>
+<div th:if="${param.signFail}" class="alert alert-danger">
+    The document could not be signed at this time, please try again later.
+</div>
+
+<div th:if="${param.deleteSuccess}" class="alert alert-success">
+    This document has been deleted.
+</div>
+<div th:if="${param.deleteFail}" class="alert alert-danger">
+    This document has been deleted.
+</div>
 <div class="container">
     <h1>My Documents</h1>
+    <div class="text-success">
+        <h3>[[${deleteSuccessMessage}]]</h3>
+    </div>
     <form action="/sign-document" method="post">
         <table class="table">
             <thead>
@@ -59,8 +79,9 @@
             </tr>
             </tbody>
         </table>
-        <button type="submit" class="btn btn-primary">Sign Document</button>
+        <button type="submit" class="btn btn-success">Sign Document</button>
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#sendDocumentModal">Send Document</button>
+        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteDocumentModal">Delete Document</button>
         <a th:href="@{/dashboard}" class="btn btn-secondary">Back</a>
     </form>
 </div>
@@ -98,6 +119,38 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="deleteDocumentModal" tabindex="-1" role="dialog" aria-labelledby="deleteDocumentModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteDocumentModalLabel">Are you sure you wish to delete this document?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="/delete-document" method="post">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="selectedDocumentId">Selected Document ID:</label>
+                        <span id="deleteSelectedDocumentId" th:text="${selectedDocumentId}"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="selectedDocumentName">Selected Document Name:</label>
+                        <span id="deleteSelectedDocumentName" th:text="${selectedDocumentName}"></span>
+                    </div>
+
+                </div>
+                <input type="hidden" id="deleteSelectedDocumentIdValue" name="deleteSelectedDocumentIdValue" th:value="${selectedDocumentId}">
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-danger">Delete Document</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 <script th:inline="javascript">
     $(document).ready(function () {
         $('input[type=radio][name=selectedDocumentId]').change(function () {
@@ -107,6 +160,9 @@
             $('#selectedDocumentId').text(selectedDocumentId);
             $('#selectedDocumentName').text(selectedDocumentName);
             $('#selectedDocumentIdValue').val(selectedDocumentId);
+            $('#deleteSelectedDocumentId').text(selectedDocumentId);
+            $('#deleteSelectedDocumentName').text(selectedDocumentName);
+            $('#deleteSelectedDocumentIdValue').val(selectedDocumentId);
         });
     });
 </script>

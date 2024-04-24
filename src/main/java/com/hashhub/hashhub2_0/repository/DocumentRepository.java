@@ -16,6 +16,8 @@ public interface DocumentRepository extends JpaRepository<DocumentEntity, Long> 
 
     DocumentEntity findById(long id);
 
+    DocumentEntity deleteById(long id);
+
 
 
 
