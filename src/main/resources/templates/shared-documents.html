@@ -50,14 +50,73 @@
                     </span>
                 </td>
                 <td>
-                    <input title="Select the document you wish to verify." type="radio" name="selectedDocumentId" th:value="${document.id}">
+                    <input type="radio" name="selectedDocumentId" th:value="${document.id}"
+                           th:attr="data-document-name=${document.name}">
                 </td>
             </tr>
             </tbody>
         </table>
+        <input type="hidden" id="selectedDocumentId" name="selectedDocumentId">
+        <input type="hidden" id="selectedDocumentName" name="selectedDocumentName">
         <button type="submit" class="btn btn-primary">Verify Document</button>
+        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#downloadDocumentModal">Download Document</button>
         <a th:href="@{/dashboard}" class="btn btn-secondary">Back</a>
     </form>
 </div>
+
+
+<div class="modal fade" id="downloadDocumentModal" tabindex="-1" role="dialog" aria-labelledby="downloadDocumentModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="downloadDocumentModalLabel">Are you sure you wish to delete this document?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="/download-document" method="get">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="selectedDocumentId">Selected Document ID:</label>
+                        <span id="downloadSelectedDocumentId" th:text="${selectedDocumentId}"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="selectedDocumentName">Selected Document Name:</label>
+                        <span id="downloadSelectedDocumentName" th:text="${selectedDocumentName}"></span>
+                    </div>
+                </div>
+                <input type="hidden" id="downloadSelectedDocumentIdValue" name="downloadSelectedDocumentIdValue" th:value="${selectedDocumentId}">
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Download Document</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script th:inline="javascript">
+    $(document).ready(function () {
+        $('input[type=radio][name=selectedDocumentId]').change(function () {
+            var selectedDocumentId = $(this).val();
+            var selectedDocumentName = $(this).data('document-name');
+            // put the document information from the document selected by the user into the modal view and display to user.
+            $('#selectedDocumentId').text(selectedDocumentId);
+            $('#selectedDocumentName').text(selectedDocumentName);
+            $('#selectedDocumentIdValue').val(selectedDocumentId);
+            $('#deleteSelectedDocumentId').text(selectedDocumentId);
+            $('#deleteSelectedDocumentName').text(selectedDocumentName);
+            $('#deleteSelectedDocumentIdValue').val(selectedDocumentId);
+            $('#downloadSelectedDocumentId').text(selectedDocumentId);
+            $('#downloadSelectedDocumentName').text(selectedDocumentName);
+            $('#downloadSelectedDocumentIdValue').val(selectedDocumentId);
+        });
+    });
+</script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

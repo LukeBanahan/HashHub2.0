@@ -6,12 +6,38 @@
     <title>Dashboard</title>
     <div th:replace="fragments/navbar :: myNavbar "></div>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <h1>Dashboard</h1>
-    <a th:href="@{/document-upload}" class="btn btn-primary btn-block btn-register">Document Upload</a>
-    <a th:href="@{/user-documents}" class="btn btn-primary btn-block btn-register">My Documents</a>
-    <a th:href="@{/shared-documents}" class="btn btn-primary btn-block btn-register">Documents Shared with me</a>
+    <div class="container">
+        <!--<img src="..." class="img-fluid" alt="Responsive image"> -->
+        <h1 class="text-center my-4">Dashboard</h1>
+        <div class="row">
+            <div class="col-md-4">
+                <a th:href="@{/document-upload}">
+                    <img src="/images/upload.jpg" class="rounded mx-auto d-block img-fluid" alt="Upload">
+                <p class="mt-2">Upload Document</p>
+                </a>
+            </div>
+            <div class="col-md-4">
+                <a th:href="@{/user-documents}">
+                <img src="/images/document.jpg" class="rounded float-left img-fluid" alt="Document">
+                <p class="mt-2">My Documents</p>
+                </a>
+            </div>
+            <div class="col-md-4">
+                <a th:href="@{/shared-documents}">
+                <img src="/images/sharedDocuments.jpg" class="rounded float-right img-fluid" alt="Shared Documents">
+                <p class="mt-2">Documents Shared With Me</p>
+                </a>
+            </div>
+        </div>
+    </div>
 
-</head>
-<body>
-</body>
+
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    </body>
 </html>
+   <!-- <a th:href="@{/document-upload}" class="btn btn-primary btn-block btn-register">Document Upload</a>
+    <a th:href="@{/user-documents}" class="btn btn-primary btn-block btn-register">My Documents</a>
+    <a th:href="@{/shared-documents}" class="btn btn-primary btn-block btn-register">Documents Shared with me</a> -->

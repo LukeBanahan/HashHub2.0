@@ -5,6 +5,9 @@ import com.hashhub.hashhub2_0.dto.RegistrationDto;
 import com.hashhub.hashhub2_0.models.DocumentEntity;
 import com.hashhub.hashhub2_0.repository.DocumentRepository;
 import com.hashhub.hashhub2_0.repository.UserRepository;
+import com.hashhub.hashhub2_0.service.SmtpService;
+import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -21,14 +24,18 @@ import java.security.*;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.Base64;
+
 
 @Controller
 public class DocumentController {
 
+
+
     @Autowired
     private DocumentRepository repo;
+
+    @Autowired
+    private SmtpService smtpService;
 
     @GetMapping("/document-upload")
     public String documentUploadPage() {
@@ -39,6 +46,8 @@ public class DocumentController {
     public String uploadFile(@RequestParam("document") MultipartFile multipartFile,
                              RedirectAttributes ra) throws IOException {
         String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+
+
 
         //gets authenticated email from spring security
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -55,12 +64,14 @@ public class DocumentController {
         //populates email field with current authenticated user's email
         document.setEmail(userEmail);
 
-        repo.save(document);
-
-        ra.addFlashAttribute("documentSuccessMsg", "Document upload was successful.");
+            repo.save(document);
+            ra.addFlashAttribute("documentSuccessMsg", "Document upload was successful.");
 
         return "redirect:/document-upload";
-    }
+
+    }    //https://www.youtube.com/watch?v=ryRQ6qXLLYM&t=3448s
+
+
 
     @GetMapping("/user-documents")
     public String getUserDocuments(Model model) {
@@ -75,6 +86,27 @@ public class DocumentController {
 
         return "user-documents";
     }
+
+
+    @GetMapping("/download-document")
+    public void downloadFile(@RequestParam("downloadSelectedDocumentIdValue") String id, HttpServletResponse response, RedirectAttributes ra) throws IOException {
+        long documentId = Long.parseLong(id);
+        DocumentEntity documentEntity = repo.findById(documentId);
+
+        response.setContentType("application/octet-stream");
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=" + documentEntity.getName();
+
+        response.setHeader(headerKey, headerValue);
+
+        ServletOutputStream outputStream = response.getOutputStream();
+
+        outputStream.write(documentEntity.getContent());
+        outputStream.close();
+    }
+
+
+
 
     @GetMapping("/shared-documents")
     public String getSharedDocuments(Model model) {
@@ -101,6 +133,10 @@ public class DocumentController {
             documentEntity.setSharedWith(recipientEmail);
             repo.save(documentEntity);
         }
+
+        String subject = "New Document Shared With You.";
+        String body = "Dear, " +recipientEmail+ "\nA new document has been shared with you on HashHub. \nPlease sign in to review/sign documents shared with you. \nMany Thanks, \nHashHub Team";
+        smtpService.sendEmail(recipientEmail, subject, body);
 
         if (documentEntity != null) {
             ra.addAttribute("sendSuccess", true);
@@ -163,7 +199,7 @@ public class DocumentController {
         }
         return "redirect:/user-documents";
     }
-
+//https://www.tabnine.com/code/java/classes/java.security.spec.X509EncodedKeySpec
 
 
     @PostMapping("/verify-document")
@@ -178,8 +214,6 @@ public class DocumentController {
         byte[] documentToVerify = documentEntity.getContent();
         MessageDigest digest = MessageDigest.getInstance("SHA256");
         byte[] hashedDocument = digest.digest(documentToVerify);
-
-
 
         X509EncodedKeySpec keySpec = new X509EncodedKeySpec(publicKeyBytes);
         KeyFactory keyFactory = KeyFactory.getInstance("RSA");
