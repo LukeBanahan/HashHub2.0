@@ -158,8 +158,6 @@ public class DocumentController {
         }
         return "redirect:/user-documents";
     }
-
-
     @PostMapping("/sign-document")
     public String signDocument(@RequestParam("selectedDocumentId") String id, RedirectAttributes ra ) throws NoSuchAlgorithmException, InvalidKeyException, SignatureException {
         //Find selected document
@@ -239,8 +237,8 @@ public class DocumentController {
     } //https://www.tabnine.com/code/java/classes/java.security.spec.X509EncodedKeySpec
 
 
-
 }
+
 
 
 
