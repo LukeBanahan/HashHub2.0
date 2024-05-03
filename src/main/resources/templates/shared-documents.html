@@ -22,6 +22,7 @@
             <tr>
                 <th>Document ID</th>
                 <th>File Name</th>
+                <th>File Size</th>
                 <th>Shared By</th>
                 <th>Sign Status</th>
                 <th>Verification Status</th>
@@ -32,6 +33,7 @@
             <tr th:each="document : ${sharedDocuments}">
                 <td th:text="${document.id}"></td>
                 <td title="This is the title of the document" th:text="${document.name}"></td>
+                <td th:text="${document.size / 1024} + ' KB'"></td>
                 <td title="This is the email address of the user who shared this document with you." th:text="${document.email}"></td>
                 <td>
                  <span title="This document has been signed by the user who shared this document with you." th:if="${document.isSigned}">
@@ -56,7 +58,7 @@
             </tr>
             </tbody>
         </table>
-        <button type="submit" class="btn btn-primary">Verify Document</button>
+        <button type="submit" class="btn btn-success">Verify Document</button>
         <button type="button" class="btn btn-info" data-toggle="modal" data-target="#downloadDocumentModal">Download Document</button>
         <a th:href="@{/dashboard}" class="btn btn-secondary">Back</a>
     </form>

@@ -21,7 +21,7 @@ public class SmtpService {
 
         mailSender.send(message);
 
-        System.out.println("Mail sent succsessfully");
+        System.out.println("Mail sent successfully");
         //https://www.youtube.com/watch?v=ugIUObNHZdo
 
     }

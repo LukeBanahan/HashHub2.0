@@ -53,7 +53,7 @@
             <tr th:each="document : ${userDocuments}">
                 <td th:text="${document.id}"></td>
                 <td th:text="${document.name}"></td>
-                <td th:text="${document.size}"></td>
+                <td th:text="${document.size / 1024} + ' KB'"></td>
                 <td th:text="${document.email}"></td>
                 <td th:text="${document.sharedWith}"></td>
                 <td>

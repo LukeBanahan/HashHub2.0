@@ -135,7 +135,7 @@ public class DocumentController {
         }
 
         String subject = "New Document Shared With You.";
-        String body = "Dear, " +recipientEmail+ "\nA new document has been shared with you on HashHub. \nPlease sign in to review/sign documents shared with you. \nMany Thanks, \nHashHub Team";
+        String body = "Dear " +recipientEmail+ "," +"\n\nA new document has been shared with you on HashHub. \nPlease sign in to review/sign documents shared with you. \n\nMany Thanks, \nHashHub Team";
         smtpService.sendEmail(recipientEmail, subject, body);
 
         if (documentEntity != null) {
