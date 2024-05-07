@@ -36,44 +36,58 @@
         <div th:if="${param.logout}" class="alert alert-success">
             You have been logged out.</div>
         <div class="login-form">
-            <label>Username</label>
+            <label for="username">Username</label>
             <input
                     type="text"
                     class="form-control"
+                    id="username"
+                    name="username"
                     placeholder="Username"
                     th:field="*{username}"
-                    required>
+                    required
+                    tabindex="1"
+                    title="Enter your username">
         </div>
         <div class="form-group">
-            <label>Email</label>
+            <label for="email">Email</label>
             <input
                     type="text"
                     class="form-control"
+                    id="email"
+                    name="email"
                     placeholder="Email"
                     th:field="*{email}"
-                    required>
+                    required
+                    tabindex="2"
+                    title="Enter your email address">
         </div>
         <div class="form-group">
-            <label>Password</label>
+            <label for="password">Password</label>
             <input
                     type="password"
                     class="form-control"
+                    id="password"
+                    name="password"
                     placeholder="Password"
                     th:field="*{password}"
-                    required>
+                    required
+                    tabindex="3"
+                    title="Enter your password (at least 8 characters long and contain at least one letter and one digit)">
         </div>
         <div class="form-group">
             <label for="confirmPassword">Confirm Password</label>
             <input
                     type="password"
-                   class="form-control"
+                    class="form-control"
                     id="confirmPassword"
                     name="confirmPassword"
                     placeholder="Confirm Password"
-                    required>
+                    required
+                    tabindex="4"
+                    title="Confirm your password">
         </div>
-        <button th:href="@{/register}" type="submit" class="btn btn-success btn-block btn-success">Register</button>
-        <a th:href="@{/login}" class="btn btn-primary btn-block btn-register">Login here</a>
+        <button type="submit" class="btn btn-success btn-block btn-success" tabindex="5" title="Click to register">Register</button>
+        <a href="/login" class="btn btn-primary btn-block btn-register" tabindex="6" title="Go to login page">Login here</a>
     </form>
 </div>
 
@@ -88,21 +102,21 @@
         return true;
     }
 
-function validatePassword() {
-    var password = document.getElementById("password").value;
-    var passwordRegex = /^(?=.*[0-9])(?=.*[a-zA-Z])[a-zA-Z0-9]{8,}$/;
-    var confirmPassword = document.getElementById("confirmPassword").value
+    function validatePassword() {
+        var password = document.getElementById("password").value;
+        var passwordRegex = /^(?=.*[0-9])(?=.*[a-zA-Z])[a-zA-Z0-9]{8,}$/;
+        var confirmPassword = document.getElementById("confirmPassword").value
 
-    if (!passwordRegex.test(password)) {
-        alert("Password must be at least 8 characters long and contain at least one letter and one digit.");
-        return false;
+        if (!passwordRegex.test(password)) {
+            alert("Password must be at least 8 characters long and contain at least one letter and one digit.");
+            return false;
+        }
+
+        if (password !== confirmPassword) {
+            alert("Passwords do not match.");
+            return false;
+        }
+
+        return true;
     }
-
-    if (password !== confirmPassword) {
-        alert("Passwords do not match.");
-        return false;
-    }
-
-    return true;
-}
 </script>

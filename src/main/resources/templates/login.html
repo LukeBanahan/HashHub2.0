@@ -27,25 +27,30 @@
     </style>
 </head>
 <body>
-
 <div class="container">
     <h2 class="text-center mb-4">Login</h2>
     <div th:if="${param.error}" class="alert alert-danger">
         Invalid username and password.
     </div>
     <div th:if="${param.logout}" class="alert alert-success">
-        You have been logged out.</div>
+        You have been logged out.
+    </div>
+    <div th:if="${param.authFail}" class="alert alert-danger">
+        Please log in to access this page.
+    </div>
 
     <form method="post" role="form" th:action="@{/login}">
         <div class="form-group">
             <label for="username">Username</label>
-            <input type="text" class="form-control" id="username" name="username" placeholder="Username">
+            <input type="text" class="form-control" id="username" name="username" placeholder="Username" tabindex="1" title="Enter your username">
         </div>
         <div class="form-group">
             <label for="password">Password</label>
-            <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+            <input type="password" class="form-control" id="password" name="password" placeholder="Password" tabindex="2" title="Enter your password">
         </div>
-        <button th:href="@{/login}" value="Log in" type="submit" class="btn btn-primary btn-block btn-success">Login</button>
-        <a th:href="@{/register}" class="btn btn-primary btn-block btn-register">Don't have an account? Register here.</a>
+        <button value="Log in" type="submit" class="btn btn-primary btn-block btn-success" tabindex="3" title="Click to login">Login</button>
+        <a th:href="@{/register}" class="btn btn-primary btn-block btn-register" tabindex="4" title="Don't have an account? Register here.">Don't have an account? Register here.</a>
     </form>
 </div>
+</body>
+</html>

@@ -39,8 +39,15 @@ public class DocumentController {
 
     @GetMapping("/document-upload")
     public String documentUploadPage() {
-        return "document-upload";
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && !authentication.getName().equals("anonymousUser") && authentication.isAuthenticated()) {
+            return "document-upload";
+        } else {
+            return "redirect:/login?authFail";
+        }
     }
+
+
 
     @PostMapping("/upload")
     public String uploadFile(@RequestParam("document") MultipartFile multipartFile,
@@ -48,44 +55,53 @@ public class DocumentController {
         String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
 
 
-
-        //gets authenticated email from spring security
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String userEmail = authentication.getName();
+        if (authentication != null && !authentication.getName().equals("anonymousUser") &&  authentication.isAuthenticated()) {
+            //gets authenticated email from spring security
+            String userEmail = authentication.getName();
 
-        DocumentEntity document = new DocumentEntity ();
-        document.setName(fileName);
-        document.setContent(multipartFile.getBytes());
-        document.setSize(multipartFile.getSize());
-        document.setSigned(false);
-        document.setVerified(false);
-        document.setUploadedOn(LocalDateTime.now());
+            DocumentEntity document = new DocumentEntity();
+            document.setName(fileName);
+            document.setContent(multipartFile.getBytes());
+            document.setSize(multipartFile.getSize());
+            document.setSigned(false);
+            document.setVerified(false);
+            document.setUploadedOn(LocalDateTime.now());
 
-        //populates email field with current authenticated user's email
-        document.setEmail(userEmail);
+            //populates email field with current authenticated user's email
+            document.setEmail(userEmail);
 
             repo.save(document);
             ra.addFlashAttribute("documentSuccessMsg", "Document upload was successful.");
 
-        return "redirect:/document-upload";
-
-    }    //https://www.youtube.com/watch?v=ryRQ6qXLLYM&t=3448s
+        return "redirect:/document-upload"; //https://www.youtube.com/watch?v=ryRQ6qXLLYM&t=3448s
+    } else {
+            return "redirect:/login?authFail";
+        }
+    }
 
 
 
     @GetMapping("/user-documents")
-    public String getUserDocuments(Model model) {
-        //get current user email from spring security
+    public String getUserDocuments(Model model, RedirectAttributes redirectAttributes) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String userEmail = authentication.getName();
+        // Check if the user is authenticated
+        if (authentication != null && !authentication.getName().equals("anonymousUser") &&  authentication.isAuthenticated()) {
+            // Get current user email from spring security
+            String userEmail = authentication.getName();
+            // Creates an iterable collection of documents and displays documents uploaded by current user email
+            Iterable<DocumentEntity> userDocuments =  repo.findByEmail(userEmail);
 
-        // creates an iterable collection of documents and filters by current user email
-        Iterable<DocumentEntity> userDocuments =  repo.findByEmail(userEmail);
+            model.addAttribute("userDocuments", userDocuments);
 
-        model.addAttribute("userDocuments", userDocuments);
-
-        return "user-documents";
+            return "user-documents";
+        } else {
+            // If user is not authenticated, redirect to login page with error message
+            redirectAttributes.addFlashAttribute("authFail", "Please log in to access this page.");
+            return "redirect:/login?authFail";
+        }
     }
+
 
 
     @GetMapping("/download-document")
@@ -112,6 +128,7 @@ public class DocumentController {
     public String getSharedDocuments(Model model) {
         //get current user email from spring security
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && !authentication.getName().equals("anonymousUser") &&  authentication.isAuthenticated()) {
         String userEmail = authentication.getName();
 
         // creates an iterable collection of documents and filters by current user email
@@ -120,7 +137,9 @@ public class DocumentController {
         model.addAttribute("sharedDocuments", sharedDocuments);
 
         return "shared-documents";
-    }
+    } else // If user is not authenticated, redirect to login page
+            return "redirect:/login?authFail";
+        }
 
 
     @PostMapping("/send-document")
@@ -158,6 +177,8 @@ public class DocumentController {
         }
         return "redirect:/user-documents";
     }
+
+
     @PostMapping("/sign-document")
     public String signDocument(@RequestParam("selectedDocumentId") String id, RedirectAttributes ra ) throws NoSuchAlgorithmException, InvalidKeyException, SignatureException {
         //Find selected document

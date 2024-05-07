@@ -3,50 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <title>Navbar</title>
-    <!-- Include Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-
 </head>
 <body>
 <div th:fragment="myNavbar">
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" th:href="@{/dashboard}">HashHub</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" th:href="@{/dashboard}">HashHub</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" th:href="@{/dashboard}">Dashboard <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-            <a class="nav-link" th:href="@{/document-upload}">Document Upload</a>
-        </li>
-            <li class="nav-item">
-                <a class="nav-link" th:href="@{/user-documents}">My Documents</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" th:href="@{/shared-documents}">Shared Documents</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" th:href="@{/login}">Sign In</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" th:href="@{/register}">Register</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" th:href="@{/logout}">Sign Out</a>
-            </li>
-        </ul>
-    </div>
-</nav>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" th:href="@{/dashboard}" title="Go to Dashboard">Dashboard <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/document-upload}" title="Upload a Document">Document Upload</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/user-documents}" title="View My Documents">My Documents</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/shared-documents}" title="View Shared Documents">Shared Documents</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/login}" title="Sign In">Sign In</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/register}" title="Register">Register</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/logout}" title="Sign Out">Sign Out</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
 
-
-<!-- Include Bootstrap JS -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </div>
 </body>
 </html>
