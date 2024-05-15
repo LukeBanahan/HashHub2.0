@@ -74,13 +74,13 @@ public class DocumentController {
             repo.save(document);
             ra.addFlashAttribute("documentSuccessMsg", "Document upload was successful.");
 
-        return "redirect:/document-upload"; //https://www.youtube.com/watch?v=ryRQ6qXLLYM&t=3448s
+        return "redirect:/document-upload";
     } else {
             return "redirect:/login?authFail";
         }
     }
 
-
+//https://www.youtube.com/watch?v=ryRQ6qXLLYM&t=3448s
 
     @GetMapping("/user-documents")
     public String getUserDocuments(Model model, RedirectAttributes redirectAttributes) {
@@ -107,7 +107,9 @@ public class DocumentController {
     @GetMapping("/download-document")
     public void downloadFile(@RequestParam("downloadSelectedDocumentIdValue") String id, HttpServletResponse response, RedirectAttributes ra) throws IOException {
         long documentId = Long.parseLong(id);
+
         DocumentEntity documentEntity = repo.findById(documentId);
+
 
         response.setContentType("application/octet-stream");
         String headerKey = "Content-Disposition";
@@ -155,6 +157,7 @@ public class DocumentController {
 
         String subject = "New Document Shared With You.";
         String body = "Dear " +recipientEmail+ "," +"\n\nA new document has been shared with you on HashHub. \nPlease sign in to review/sign documents shared with you. \n\nMany Thanks, \nHashHub Team";
+
         smtpService.sendEmail(recipientEmail, subject, body);
 
         if (documentEntity != null) {
@@ -181,7 +184,7 @@ public class DocumentController {
 
     @PostMapping("/sign-document")
     public String signDocument(@RequestParam("selectedDocumentId") String id, RedirectAttributes ra ) throws NoSuchAlgorithmException, InvalidKeyException, SignatureException {
-        //Find selected document
+        //Find selected document by id
         long documentId = Long.parseLong(id);
         DocumentEntity documentEntity = repo.findById(documentId);
 
@@ -255,12 +258,11 @@ public class DocumentController {
             return "redirect:/shared-documents?fail";
         }
 
-    } //https://www.tabnine.com/code/java/classes/java.security.spec.X509EncodedKeySpec
-
+    }
 
 }
 
-
+//https://www.tabnine.com/code/java/classes/java.security.spec.X509EncodedKeySpec
 
 
 

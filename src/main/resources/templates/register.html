@@ -29,7 +29,7 @@
 <body>
 <div th:replace="fragments/navbar :: myNavbar "></div>
 <div class="container">
-    <h2 class="text-center mb-4">Register</h2>
+    <h2 class="text-center mb-4">Register Here</h2>
     <form onsubmit="return validateEmail() && validatePassword()" method="post" role="form" th:action="@{/register/save}" th:object="${user}">
         <div th:if="${param.fail}" class="alert alert-danger">
             Username or email already exists</div>

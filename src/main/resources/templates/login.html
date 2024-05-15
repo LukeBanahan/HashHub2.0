@@ -28,15 +28,20 @@
 </head>
 <body>
 <div class="container">
-    <h2 class="text-center mb-4">Login</h2>
+    <h2 class="text-center mb-4">Sign In Here!</h2>
     <div th:if="${param.error}" class="alert alert-danger">
-        Invalid username and password.
+        Invalid username and/or password.
     </div>
     <div th:if="${param.logout}" class="alert alert-success">
         You have been logged out.
     </div>
     <div th:if="${param.authFail}" class="alert alert-danger">
         Please log in to access this page.
+    </div>
+
+    <div th:if="${param.success}" class="alert alert-success">
+        Account Registered Successfully.
+        Please Sign In Here.
     </div>
 
     <form method="post" role="form" th:action="@{/login}">

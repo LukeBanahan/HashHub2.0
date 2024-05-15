@@ -43,7 +43,7 @@ public class DocumentRepositoryTests {
         Assertions.assertNotNull(savedDocumentEntity);
     }
 
-    @Test //test that find by Id function works as expected.
+    @Test //test that findById function works as expected.
     public void DocumentRepository_findDocumentById_returnDocumentById() {
         //Arrange
         DocumentEntity documentEntity = DocumentEntity.builder()
@@ -114,4 +114,3 @@ public class DocumentRepositoryTests {
 
     }
 }
-//https://www.youtube.com/watch?v=jqwZthuBmZY&list=PL82C6-O4XrHcg8sNwpoDDhcxUCbFy855E

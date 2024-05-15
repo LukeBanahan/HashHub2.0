@@ -67,6 +67,5 @@ public class AuthController {
         userService.saveUser(user);
         System.out.print("User registered successfully.");
         return "redirect:/login?success";
-
     }
 }

@@ -35,6 +35,13 @@
     <div class="text-success">
         <h3>[[${deleteSuccessMessage}]]</h3>
     </div>
+
+    <div th:if="${param.downloadSuccess}" class="alert alert-success">
+        Document downloaded successfully.
+    </div>
+    <div th:if="${param.downloadFail}" class="alert alert-danger">
+        Please select document to be downloaded.
+    </div>
     <form action="/sign-document" method="post">
         <table class="table">
             <thead>
@@ -126,7 +133,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="downloadDocumentModalLabel">Are you sure you wish to delete this document?</h5>
+                <h5 class="modal-title" id="downloadDocumentModalLabel">Are you sure you wish to download this document?</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>

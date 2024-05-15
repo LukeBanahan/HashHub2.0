@@ -22,7 +22,11 @@ public class SmtpService {
         mailSender.send(message);
 
         System.out.println("Mail sent successfully");
-        //https://www.youtube.com/watch?v=ugIUObNHZdo
+
 
     }
 }
+
+
+
+//https://www.youtube.com/watch?v=ugIUObNHZdo
