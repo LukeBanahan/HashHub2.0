@@ -1,21 +1,19 @@
 package com.hashhub.hashhub2_0.controller;
 
-import com.hashhub.hashhub2_0.dto.DocumentDto;
-import com.hashhub.hashhub2_0.dto.RegistrationDto;
 import com.hashhub.hashhub2_0.models.DocumentEntity;
 import com.hashhub.hashhub2_0.repository.DocumentRepository;
-import com.hashhub.hashhub2_0.repository.UserRepository;
 import com.hashhub.hashhub2_0.service.SmtpService;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -80,7 +78,17 @@ public class DocumentController {
         }
     }
 
-//https://www.youtube.com/watch?v=ryRQ6qXLLYM&t=3448s
+    /***************************************************************************************
+     *    Title: Spring Boot File Upload and Download with Database
+     *    Author: Code Java
+     *    Date: 05/09/2020
+     *    Code version: 1.0
+     *    Availability: https://www.youtube.com/watch?v=ryRQ6qXLLYM&t=4394s
+     *    Accessed: 05/03/2024
+     *
+     ***************************************************************************************/
+
+
 
     @GetMapping("/user-documents")
     public String getUserDocuments(Model model, RedirectAttributes redirectAttributes) {
@@ -122,6 +130,16 @@ public class DocumentController {
         outputStream.write(documentEntity.getContent());
         outputStream.close();
     }
+
+    /***************************************************************************************
+     *    Title: Spring Boot File Upload and Download with Database
+     *    Author: Code Java
+     *    Date: 05/09/2020
+     *    Code version: 1.0
+     *    Availability: https://www.youtube.com/watch?v=ryRQ6qXLLYM&t=4394s
+     *    Accessed: 05/03/2024
+     *
+     ***************************************************************************************/
 
 
 
@@ -221,7 +239,16 @@ public class DocumentController {
         }
         return "redirect:/user-documents";
     }
-//https://www.tabnine.com/code/java/classes/java.security.spec.X509EncodedKeySpec
+
+
+    /***************************************************************************************
+     *    Title: RsaExample.java
+     *    Author: Niels Dommerholt
+     *    Date: 21/12/1016
+     *    Code version: 1.0
+     *    Availability: https://gist.github.com/nielsutrecht/0c1538b22e67c61b890a1b435a22fc99/revisions
+     *
+     ***************************************************************************************/
 
 
     @PostMapping("/verify-document")
@@ -262,7 +289,11 @@ public class DocumentController {
 
 }
 
-//https://www.tabnine.com/code/java/classes/java.security.spec.X509EncodedKeySpec
-
+/***************************************************************************************
+ *    Title: How to useX509EncodedKeySpecinjava.security.spec
+ *    Author: tabnine.com
+ *   https://www.tabnine.com/code/java/classes/java.security.spec.X509EncodedKeySpec
+ *
+ ***************************************************************************************/
 
 

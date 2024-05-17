@@ -52,15 +52,15 @@
                     </span>
                 </td>
                 <td>
-                    <input type="radio" name="selectedDocumentId" th:value="${document.id}"
+                    <input type="radio" name="selectedDocumentId" th:value="${document.id}" tabIndex="1"
                            th:attr="data-document-name=${document.name}">
                 </td>
             </tr>
             </tbody>
         </table>
-        <button type="submit" class="btn btn-success">Verify Document</button>
-        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#downloadDocumentModal">Download Document</button>
-        <a th:href="@{/dashboard}" class="btn btn-secondary">Back</a>
+        <button type="submit" tabIndex="2" class="btn btn-success">Verify Document</button>
+        <button type="button" tabindex="3" class="btn btn-info" data-toggle="modal" data-target="#downloadDocumentModal">Download Document</button>
+        <a th:href="@{/dashboard}" class="btn btn-secondary" tabindex="4">Back</a>
     </form>
 </div>
 
@@ -112,6 +112,20 @@
             $('#downloadSelectedDocumentId').text(selectedDocumentId);
             $('#downloadSelectedDocumentName').text(selectedDocumentName);
             $('#downloadSelectedDocumentIdValue').val(selectedDocumentId);
+        });
+    });
+
+    $(document).ready(function () {
+        var radioButtons = document.querySelectorAll('input[type="radio"]');
+        radioButtons.forEach(function(button) {
+            button.title = "Select document: " + button.getAttribute("data-document-name");
+
+            button.addEventListener('keypress', function(event) {
+                if (event.key === 'Enter' || event.keyCode === 13) {
+                    event.preventDefault();
+                    button.checked = true;
+                }
+            });
         });
     });
 </script>

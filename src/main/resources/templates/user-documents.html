@@ -80,17 +80,18 @@
                     </span>
                 </td>
                 <td>
-                    <input type="radio" name="selectedDocumentId" th:value="${document.id}"
+                    <input type="radio" name="selectedDocumentId" th:value="${document.id}" tabIndex="1"
                            th:attr="data-document-name=${document.name}">
                 </td>
             </tr>
             </tbody>
         </table>
-        <button type="submit" class="btn btn-success">Sign Document</button>
-        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#downloadDocumentModal">Download Document</button>
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#sendDocumentModal">Send Document</button>
-        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteDocumentModal">Delete Document</button>
-        <a th:href="@{/dashboard}" class="btn btn-secondary">Back</a>
+        <button type="submit" class="btn btn-success" tabIndex="2">Sign Document</button>
+        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#downloadDocumentModal" tabIndex="3">Download Document</button>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#sendDocumentModal" tabIndex="4">Send Document</button>
+        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteDocumentModal" tabIndex="5">Delete Document</button>
+
+        <a th:href="@{/dashboard}"  tabIndex="6" class="btn btn-secondary">Back </a>
     </form>
 </div>
 <div class="modal fade" id="sendDocumentModal" tabindex="-1" role="dialog" aria-labelledby="sendDocumentModalLabel"
@@ -190,12 +191,17 @@
         </div>
     </div>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 <script th:inline="javascript">
     $(document).ready(function () {
         $('input[type=radio][name=selectedDocumentId]').change(function () {
             var selectedDocumentId = $(this).val();
             var selectedDocumentName = $(this).data('document-name');
-  // put the document information from the document selected by the user into the modal view and display to user.
+            // put the document information from the document selected by the user into the modal view and display to user.
             $('#selectedDocumentId').text(selectedDocumentId);
             $('#selectedDocumentName').text(selectedDocumentName);
             $('#selectedDocumentIdValue').val(selectedDocumentId);
@@ -207,10 +213,22 @@
             $('#downloadSelectedDocumentIdValue').val(selectedDocumentId);
         });
     });
-</script>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
+
+    $(document).ready(function () {
+        var radioButtons = document.querySelectorAll('input[type="radio"]');
+        radioButtons.forEach(function(button) {
+            button.title = "Select document: " + button.getAttribute("data-document-name");
+
+            button.addEventListener('keypress', function(event) {
+                if (event.key === 'Enter' || event.keyCode === 13) {
+                    event.preventDefault();
+                    button.checked = true;
+                }
+            });
+        });
+    });
+
+</script>
 </body>
 </html>

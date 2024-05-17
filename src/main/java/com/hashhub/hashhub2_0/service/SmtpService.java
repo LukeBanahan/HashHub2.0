@@ -29,4 +29,13 @@ public class SmtpService {
 
 
 
-//https://www.youtube.com/watch?v=ugIUObNHZdo
+//
+
+/***************************************************************************************
+ *    Title: Send Email Using Spring Boot | Gmail SMTP | Java Mail Sender
+ *    Author: Code With Arjun
+ *    Date: 23/07/2021
+ *    Availability: https://www.youtube.com/watch?v=ugIUObNHZdo
+ *    Accessed: 04/02/2024
+ *
+ ***************************************************************************************/
